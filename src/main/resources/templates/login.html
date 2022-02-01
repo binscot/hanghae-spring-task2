@@ -52,6 +52,20 @@
             font-size: 20px;
             font-weight: bold;
         }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .alert {
+            width: 300px;
+            margin-top: 22px;
+            padding: 1.75rem 1.25rem;
+            border: 1px solid transparent;
+            border-radius: .25rem;
+        }
     </style>
 </head>
 <body>
@@ -80,7 +94,7 @@
         <button id="login-kakao-btn" class="button is-warning b" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=43268aa6f88af6282a341e3b61b9a761&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'">카카오로 로그인하기</button>
     </div>
     <button id="login-id-btn" onclick="location.href='/user/signup'" class="button signup-btn">회원 가입하기</button>
-    <div id="login-failed" style="display:none" class="alert alert-danger" role="alert">로그인에 실패하였습니다.</div>
+    <div id="login-failed" style="display:none" class="alert alert-danger" role="alert">아이디 또는 패스워드를 확인해주세요</div>
 </div>
 </body>
 <script>

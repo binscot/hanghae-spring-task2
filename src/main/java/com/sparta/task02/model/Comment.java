@@ -30,20 +30,17 @@ public class Comment extends Timestamped {
 //    @ManyToOne
 //    private User user;
 
-
     @Column(nullable = false)
     private long aticleId;
 
     @Column(nullable = false)
     private Long userId;
 
-
     public Comment(CommentRequestDto commentRequestDto, Long userId, String username) {
         this.userId = userId;
         this.comment = commentRequestDto.getComment();
         this.aticleId = commentRequestDto.getArticleId();
         this.username = username;
-
     }
 
     public void updateComment(CommentRequestDto requestDto) {
