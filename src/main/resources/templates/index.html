@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+
+  <!-- Webpage Title -->
+  <title>주특기 2주차 개인과제</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:title" content="하빈 게시판">
+  <meta property="og:description" content="아무글이나 작성해보세요!">
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+  <!-- JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // HTML 문서를 로드할 때마다 실행,
+      getMessages();
+    })
+    /////////게시글 전체 불러오기//////////////
+    function getMessages() {
+      $.ajax({
+        type: 'GET',
+        url: '/api/articles',
+        success: function (response) {
+          console.log(response)
+          for (let i = 0; i < response.length; i++) {
+            let article = response[i];
+            let id = article.id;
+            let username = article.username
+            // let username = article.username;
+            let title = article.title;
+            // let contens = article.contens;
+             let modifiedAt = article.modifiedAt;
+            console.log(title)
+            addHTML(id, title, username, modifiedAt);
+          }
+        }
+      })
+    }
+    function addHTML(id, title, username, modifiedAt) {
+      let tempHtml = `<div class="box">
+                                <article>
+                                    <a href="/detail/${id}" class="boxTitle" id="${id}-title">${title}</a>
+                                    <div class="metadata">
+                                                <div id="${id}-username" class="username">
+                                                    ${username}
+                                                </div>
+                                                <div class="date">
+                                                    ${modifiedAt}
+                                                </div>
+                                            </div>
+                                </article>
+                                </div>`;
+      $('#cards-box').append(tempHtml);
+    }
+    /////////게시글 전체 목록과 검색하기 분리//////////////
+    $(document).ready(function () {
+      $('#keyword').on('keypress', function (e) {
+        if (e.key == 'Enter') {
+          execSearch();
+        }
+      });
+      $('#close').on('click', function () {
+        $('#container').removeClass('active');
+      })
+
+      $('.nav div.nav-see').on('click', function () {
+        $('div.nav-see').addClass('active');
+        $('div.nav-search').removeClass('active');
+
+        $('#see-area').show();
+        $('#search-area').hide();
+      })
+      $('.nav div.nav-search').on('click', function () {
+        $('div.nav-see').removeClass('active');
+        $('div.nav-search').addClass('active');
+
+        $('#see-area').hide();
+        $('#search-area').show();
+      })
+
+      $('#see-area').show();
+      $('#search-area').hide();
+
+      showProduct();
+    })
+    /////////게시글 검색하기//////////////
+    // function execSearch() {
+    //   //검색창의 입력값을 가져온다.
+    //   let keyword = $('#keyword').val();
+    //   //검색창 입력값을 검사하고, 입력하지 않았을 경우 focus.
+    //   if (keyword == '') {
+    //     alert('검색어를 입력해주세요');
+    //     $('#keyword').focus();
+    //     return;
+    //   }
+    //   //GET /api/search?keyword=${keyword} 요청
+    //   $.ajax({
+    //     type: 'GET',
+    //     url: `/api/search?keyword=${keyword}`,
+    //     success: function (response) {
+    //       $('#search-result-box').empty();
+    //       // 검색해서 가져온 리스트 for문 돌려 하나씩 꺼내기
+    //       for (let i = 0; i < response.length; i++) {
+    //         let article = response[i];
+    //         let id = article.id;
+    //         let username = article.username;
+    //         let title = article.title;
+    //         let contens = article.contens;
+    //         let modifiedAt = article.modifiedAt;
+    //         //꺼내온 값 search-result-box에 붙혀넣기
+    //         addHTML2(id, username, title, modifiedAt);
+    //       }
+    //     }
+    //   })
+    //
+    // }
+    // //search-result-box만들기
+    // function addHTML2(id, username, title, modifiedAt) {
+    //   let tempHtml = `<div class="box">
+    //                             <article>
+    //                                 <a href="/detail/${id}" class="boxTitle" id="${id}-title">${title}</a>
+    //                                 <div class="metadata">
+    //                                             <div id="${id}-username" class="username">
+    //                                                 @${username}&nbsp;
+    //                                             </div>
+    //                                             <div class="date">
+    //                                                &nbsp; ${modifiedAt}
+    //                                             </div>
+    //                                         </div>
+    //                             </article>
+    //                             </div>`;
+    //   $('#search-result-box').append(tempHtml);
+    // }
+    //전체목록으로 갔을때 새로고침
+    function removeSearch(){
+      window.location.reload()
+    }
+
+  </script>
+  <style>
+
+
+    .box {
+      width: 650px;
+      text-align: center;
+      margin: 50px auto 10px auto;
+      height: 80px
+    }
+
+    .boxTitle {
+      font-size: x-large;
+      text-align: center;
+      color: black;
+
+    }
+
+    .username {
+      margin-left: 20px;
+    }
+
+    .metadata {
+      position: relative;
+      display: flex;
+      font-family: 'Spoqa Han Sans';
+      font-size: 11px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1;
+      letter-spacing: -0.77px;
+      text-align: left;
+      color: #adb5bd;
+      height: 14px;
+      padding: 10px 23px;
+    }
+
+    .metadata {
+      width: 400px;
+      margin-left: 400px;
+    }
+
+    .write-button{
+      width: 300px;
+      margin: 50px auto auto auto;
+      display: block;
+    }
+    .search-wrap{
+      width: 410px;
+      margin: auto;
+    }
+    .search-input{
+      width: 300px;
+      margin: auto;
+      float: left;
+      display: block;
+    }
+    .search-button{
+      float: right;
+    }
+
+    .nav {
+      width: 530px;
+      margin: 30px auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    .nav div {
+      cursor: pointer;
+    }
+
+    .nav div.active {
+      font-weight: 700;
+    }
+
+    .search-result-box{
+      margin-top: 100px;
+      margin-bottom: 30px;
+      display: block;
+    }
+    .login-btn{
+      float: right;
+      margin-right: 30px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-body">
+    <p class="title">
+      The bulletin board.
+    </p>
+    <a sec:authorize="!isAuthenticated()" class="login-btn" id="login-text" href="/user/login">
+      로그인
+    </a>
+    <a>[[${name}]]</a>
+    <form id="my_form" method="post" action="/user/logout">
+      <a sec:authorize="isAuthenticated()" class="login-btn" id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
+    </form>
+    <p class="subtitle">
+      It's just a bulletin board.
+    </p>
+
+  </div>
+</section>
+<div class="nav">
+  <div onclick="removeSearch()" class="nav-see active">
+    모아보기
+  </div>
+  <div class="nav-search">
+    게시글 검색
+  </div>
+</div>
+
+
+<div id="search-area">
+  <div class="search-wrap">
+    <input class="input search-input" type="text" id="keyword" placeholder="검색어를 입력해 주세요!">
+    <button onclick="execSearch()" class="button search-button">게시글 검색</button>
+  </div>
+</div>
+<div class="search-result-box" id="search-result-box"></div>
+<div id="see-area">
+  <div id="cards-box"></div>
+</div>
+
+<button class="button write-button" onclick="window.location.href='/write'">글 쓰러 가기</button>
+</body>
+</html>

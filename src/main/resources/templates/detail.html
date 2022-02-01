@@ -1,0 +1,448 @@
+<!--상세페이지-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <!-- Webpage Title -->
+  <title>주특기 1주차 개인과제</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+
+  <title>Title</title>
+  <style>
+    .card{
+      width: 500px;
+      margin: 50px auto auto auto;
+      text-align: center;
+    }
+    .time{
+
+      font-size: 11px;
+    }
+    .name{
+      font-size: 13px;
+    }
+    .tit{
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .icon{
+      position: fixed;
+      top: 215px;
+      margin-left: 220px;
+    }
+    .con:hover{
+      color: red;
+      cursor: pointer;
+    }
+
+    .title-area{
+      width: 100px;
+      margin: auto;
+      display: none;
+    }
+
+
+    .container:hover{
+      cursor: pointer;
+    }
+    .btn{
+      height: 40px;
+      color: black;
+    }
+    .bbtn{
+      color: black;
+    }
+
+    .comment{
+      width: 500px;
+      margin: 50px auto;
+    }
+    .comment-btn{
+      width: 100px;
+      margin: 10px auto;
+      display: block;
+
+    }
+    .comment-box{
+      width: 500px;
+      margin: auto;
+    }
+    .comment-text{
+      display: none;
+    }
+    .check{
+      display: none;
+    }
+    .hide{
+      display: none;
+    }
+    .article-area{
+      display: none;
+    }
+    .submit{
+      display: none;
+    }
+    .comment-modi{
+      float: right;
+      color: gray;
+    }
+    .comment-name{
+      float: left;
+    }
+    .btn-box{
+      margin: auto 1px auto auto;
+    }
+
+
+  </style>
+  <script th:inline="javascript">
+    var usernames = /*[[${#authentication.name}]]*/ 'null'
+
+    console.log(usernames)
+    $(document).ready(function () {
+      // HTML 문서를 로드할 때마다 실행,
+      getComment();
+    })
+    //메모 삭제
+    function deleteOne(idx) {
+      //DELETE /api/memos/{id} 에 요청해서 메모를 삭제합니다.
+      let id =[[${id}]];
+      $.ajax({
+        type: "DELETE",
+        url: `/api/articles/${id}`,
+        success: function (response) {
+          console.log(response)
+          if (response==="삭제성공"){
+            alert('메시지 삭제에 성공하였습니다.');
+            window.location.assign("/");
+          } else {
+            alert('작성자만 삭제할수 있습니다.')
+          }
+
+        }
+      })
+    }
+
+    //댓글 삭제
+    function deleteComment(commentId) {
+      //DELETE /api/memos/{id} 에 요청해서 메모를 삭제합니다.
+      // let commentId =[[${commentId}]];
+      var result = confirm("정말로 삭제하시겠습니까?")
+      if (result){
+        $.ajax({
+          type: "DELETE",
+          url: `/api/articles/{articleId}/comments/${commentId}`,
+          success: function (response) {
+            console.log(response)
+            if (response==="삭제성공"){
+              alert('메시지 삭제에 성공하였습니다.');
+              window.location.reload();
+            } else {
+              alert('작성자만 삭제할수 있습니다.')
+            }
+
+          }
+        })
+      }else {
+        alert("잘생각하셨습니다!")
+        window.location.reload();
+      }
+      // $.ajax({
+      //   type: "DELETE",
+      //   url: `/api/articles/{articleId}/comments/${commentId}`,
+      //   success: function (response) {
+      //     console.log(response)
+      //     if (response==="삭제성공"){
+      //       alert('메시지 삭제에 성공하였습니다.');
+      //       window.location.reload();
+      //     } else {
+      //       alert('작성자만 삭제할수 있습니다.')
+      //     }
+      //
+      //   }
+      // })
+    }
+
+    //메모 수정 수정페이지로 아이디값을 가지고 이동
+    // function edit(){
+    //   let a = [[${id}]];
+    //   if ("[[${username}]]"=="[[${name}]]"){
+    //     window.location.assign("/edit/"+a);
+    //   } else {
+    //     alert("작성자만 수정 가능합니다.")
+    //   }
+    //
+    // }
+
+    function editArticle(){
+
+      showArticleEdit()
+      let article = $(`#ar`).text().trim();
+      let title = $(`#title-title`).text().trim();
+      $(`#edit-article`).val(article)
+      $(`#title-a`).val(title)
+    }
+    function showArticleEdit(){
+      $(`#edit-article`).show();
+      $(`#ar`).hide();
+      $(`#title-a`).show();
+      $(`#title-title`).hide();
+      $(`#submitA`).show();
+      $(`#edit-A`).hide();
+    }
+
+    function isValidContents(contents) {
+      if (contents == '') {
+        alert('내용을 입력해주세요');
+        return false;
+      }
+
+      if (contents.trim().length > 300) {
+        alert('공백 포함 300자 이하로 입력해주세요');
+        return false;
+      }
+      return true;
+    }
+
+    // 게시글 수정.
+    function submitArticle() {
+      //작성 대상 메모의 username과 title, contents 를 확인합니다.
+      let title = $(`#title-a`).val().trim();
+      let contents = $(`#edit-article`).val().trim();
+
+      //작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+      if (isValidContents(contents) == false) {
+        return;
+      }
+
+      //전달할 data JSON으로 만듭니다.
+      let data = {'title':title,'contents': contents};
+      //넘겨줄 값을 id에 넣기
+      let id = [[${id}]];
+      //PUT /api/memos/{id} 에 data를 전달합니다.
+      $.ajax({
+        type: "PUT",
+        url: `/api/articles/${id}`,
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function (response) {
+          alert('메시지 변경에 성공하였습니다.');
+          window.location.reload()
+        }
+      });
+    }
+
+
+
+    //댓글
+    function isValidComments(comment) {
+
+      if (comment == '') {
+        alert('내용을 입력해주세요');
+        return false;
+      }
+      if (comment.trim().length > 100) {
+        alert('공백 포함 100자 이하로 입력해주세요');
+        return false;
+      }
+      return true;
+    }
+    //댓글 생성
+    function writeComment() {
+      if (usernames == 'anonymousUser'){
+        alert("로그인이 필요합니다!")
+        window.location.assign('/user/login')
+      } else {
+        //작성한 메모를 불러옵니다.
+        let comment = $('#comment').val();
+        //작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+        if (isValidComments(comment) == false) {
+          return;
+        }
+        //전달할 data JSON으로 만듭니다.
+        let data = {'comment':comment,'articleId':[[${id}]]};
+        //POST /api/articles 에 data를 전달합니다.
+        $.ajax({
+          type: "POST",
+          url: "/api/articles/{id}/comments",
+          contentType: "application/json", // JSON 형식으로 전달함을 알리기
+          data: JSON.stringify(data),
+          success: function (response) {
+            alert('메시지가 성공적으로 작성되었습니다.');
+            window.location.reload();
+          }
+        });
+      }
+
+    }
+
+
+    /////////댓글 전체 불러오기//////////////
+    function getComment() {
+      let id =[[${id}]];
+      $.ajax({
+        type: 'GET',
+        url: `/articles/${id}/comments`,
+        success: function (response) {
+          console.log(response)
+          for (let i =0; i<response.length;i++){
+            let comments = response[i];
+            let comment = comments.comment;
+            let username = comments.username;
+            let modifiedAt = comments.modifiedAt;
+            let commentId = comments.id;
+            console.log(comment,username,modifiedAt)
+            commentAddHTML(comment,username, modifiedAt,commentId);
+          }
+        }
+      })
+    }
+    function commentAddHTML(comment,username, modifiedAt, commentId){
+      let tempHtml = makeComments(comment,username, modifiedAt, commentId);
+      $('#cards-box').append(tempHtml);
+    }
+
+
+    function makeComments(comment,username, modifiedAt, commentId) {
+      console.log(usernames)
+      let hide ="hide"
+      console.log(username)
+      if (usernames === username){
+          hide=""
+      }
+      return `<div class="box comment-box">
+  <article class="media">
+    <div class="media-content">
+      <div class="content">
+        <p>
+          <strong class="comment-name">${username}</strong><p class="comment-modi">${modifiedAt}</p>
+          <br>
+        <p id="${commentId}-comment">${comment}</p>
+        </p>
+        <textarea class="textarea comment-text" id="${commentId}-textarea" placeholder="e.g. Hello world"></textarea>
+      </div>
+      <nav class="level is-mobile">
+        <div class="level-left btn-box">
+          <a class="level-item ${hide}" aria-label="reply">
+            <i class="fas fa-edit" id="${commentId}-edit" onclick="editComment(${commentId})"></i>
+          </a>
+          <a class="level-item ${hide}" id="${commentId}-delete" aria-label="retweet" onclick="deleteComment(${commentId})">
+            <i class="fas fa-trash-alt"></i>
+          </a>
+          <a class="level-item check " id="${commentId}-check" aria-label="check">
+            <i class="fas fa-lg fa-check-square" onclick="submitEdit(${commentId})"></i>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </article>
+</div>`;
+      // $('#cards-box').append(tempHtml);
+    }
+
+    function editComment(commentId){
+
+      showEdit(commentId)
+      let comment = $(`#${commentId}-comment`).text().trim();
+      $(`#${commentId}-textarea`).val(comment)
+    }
+    function showEdit(commentId){
+      $(`#${commentId}-textarea`).show();
+      $(`#${commentId}-check`).show();
+      $(`#${commentId}-comment`).hide();
+      $(`#${commentId}-edit`).hide();
+      $(`#${commentId}-delete`).hide();
+    }
+
+    function submitEdit(commentId) {
+      //작성 대상 메모의 username과 title, contents 를 확인합니다.
+      let comment = $(`#${commentId}-textarea`).val().trim();
+      //작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+      if (isValidContents(comment) == false) {
+        return;
+      }
+      //전달할 data JSON으로 만듭니다.
+      let data = {'comment': comment};
+      //넘겨줄 값을 id에 넣기
+      //PUT /api/memos/{id} 에 data를 전달합니다.
+      $.ajax({
+        type: "PUT",
+        url: `/api/articles/{articleId}/comments/${commentId}`,
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function (response) {
+          alert('메시지 변경에 성공하였습니다.');
+          window.location.reload();
+        }
+      });
+    }
+
+  </script>
+</head>
+<body>
+<!--배너-->
+<section class="hero">
+  <div class="hero-body">
+    <p class="title">
+      The bulletin board.
+    </p>
+    <p th:text="${#authentication.name} +'님 반갑습니다'" class="subtitle">
+    </p>
+  </div>
+</section>
+<!--게시글 상세 카드-->
+<div class="card">
+  <div class="icon-text ">
+  <span class="icon">
+    <i onclick="window.location.href ='/'" class="fas fa-times con"></i>
+  </span>
+  </div>
+  <span class="tit">
+    <p id="title-title">[[${title}]]</p>
+    <input class="input title-area" id="title-a" type="text" placeholder="Text input">
+        </span>
+  <div class="card-content">
+    <div class="content">
+      <p class="article" id="ar">[[${contents}]]</p>
+      <br>
+      <textarea class="textarea article-area" id="edit-article" placeholder="10 lines of textarea" rows="10"></textarea>
+      <div>
+        <p class="time" >생성:[[${createdAt}]] 최종 수정:[[${modifiedAt}]]</p>
+        <p class="name">@[[${username}]]</p>
+      </div>
+    </div>
+  </div>
+  <div th:if="${#authentication.name} == ${username}" class="bbtn">
+    <footer class="card-footer btn">
+      <a onclick="editArticle()" id="edit-A" class="card-footer-item"><i class="fas fa-lg fa-edit"></i></a>
+      <a onclick="submitArticle()" id="submitA" class="card-footer-item submit"><i class="fas fa-check-square"></i></a>
+      <a onclick="deleteOne()" class="card-footer-item"><i class="fas fa-lg fa-trash-alt container"></i></a>
+    </footer>
+  </div>
+  <div th:unless="${#authentication.name} == ${username}" class="bbtn">
+  </div>
+</div>
+<div class="comment">
+  <p id="th1" th:text="${#authentication.name} + '님 댓글을 남겨주세요!'" ></p>
+  <textarea class="textarea" id="comment"></textarea>
+  <button class="button comment-btn" onclick="writeComment()">댓글 남기기</button>
+</div>
+<div id="cards-box"></div>
+</body>
+</html>

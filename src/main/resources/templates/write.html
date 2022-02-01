@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+  <!-- Webpage Title -->
+  <title>주특기 1주차 개인과제</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <!-- Font Awesome CSS -->
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+  <script>
+    //생성한 게시글을 확인
+    function isValidContents(contents, title) {
+
+      if (contents == '') {
+        alert('내용을 입력해주세요');
+        return false;
+      }
+      if (title == '') {
+        alert('제목을 입력해주세요');
+        return false;
+      }
+      if (contents.trim().length > 300) {
+        alert('공백 포함 300자 이하로 입력해주세요');
+        return false;
+      }
+      return true;
+    }
+    //게시글 생성
+    function writePost() {
+      //작성한 메모를 불러옵니다.
+      let title = $('#title').val();
+      let contents = $('#contents').val();
+      //작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+      if (isValidContents(contents, title) == false) {
+        return;
+      }
+      //전달할 data JSON으로 만듭니다.
+      let data = {'title':title,'contents': contents};
+      //POST /api/articles 에 data를 전달합니다.
+      $.ajax({
+        type: "POST",
+        url: "/api/articles",
+        contentType: "application/json", // JSON 형식으로 전달함을 알리기
+        data: JSON.stringify(data),
+        success: function (response) {
+          alert('메시지가 성공적으로 작성되었습니다.');
+          window.location.href=('/');
+        }
+      });
+    }
+  </script>
+  <style>
+
+    .box {
+      width: 700px;
+      margin: 30px auto;
+    }
+
+    .inputa {
+      width: 150px;
+      margin-left: 10px;
+    }
+
+    .inputb {
+      width: 420px;
+      margin: auto auto auto 50px;
+    }
+
+    .inBox {
+      height: 460px;
+    }
+    .buttona {
+      width: 300px;
+      margin-top: 50px;
+      display: block;
+      float: right;
+    }
+    .buttonb{
+      width: 300px;
+      margin-top: 50px;
+      display: block;
+      float: left;
+    }
+
+  </style>
+</head>
+<body>
+<!--배너-->
+<section class="hero">
+  <div class="hero-body">
+    <p class="title">
+      The bulletin board.
+    </p>
+    <p class="subtitle">
+      It's just a bulletin board.
+    </p>
+  </div>
+</section>
+<!--게시글 작성-->
+<div class="control has-icons-left has-icons-right box">
+  <input class="input inputb" type="text" placeholder="제목" id="title">
+</div>
+<div class="box">
+  <textarea class="textarea inBox" placeholder="내용을 입력하세요!" id="contents"></textarea>
+  <button class="button buttonb" onclick="window.location.href='/'">메인으로</button><button class="button buttona" onclick="writePost()">작성 완료!</button>
+</div>
+</body>
+</html>
