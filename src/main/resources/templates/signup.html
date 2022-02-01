@@ -56,29 +56,28 @@
 
     function checkdup() {
       let nickname = $('#nickname').val();
-      let data = {'nickname':nickname}
-      // var checkpass = document.getElementById('checkpass').value;
-      // var password = document.getElementById('password').value;
-      console.log(nickname)
+      var checkpass = document.getElementById('checkpass').value;
+      var password = document.getElementById('password').value;
       $.ajax({
         type: "POST",
         url: "/api/check",
         contentType: "application/json", // JSON 형식으로 전달함을 알리기
-        data: JSON.stringify(data),
+        data: nickname,
         success: function (response) {
-          console.log(response)
-          if (response === "y") {
-            alert("중복입니다.")
-            // }else if (nickname==''){
-            //   alert("아이디를 입력해주세요!")
-            // } else if (password != checkpass){
-            //   alert("비밀번호와 비밀번호확인이 일치하지 않습니다.")
-            // } else if (!is_nickname(nickname)){
-            //   alert("아이디 형식을 확인해 주세요!")
-            } else {
+          if (response === "중복") {
+            alert("중복된 아이디 입니다.")
+            }else if (nickname==''){
+              alert("아이디를 입력해주세요!")
+            } else if (password != checkpass){
+              alert("비밀번호와 비밀번호확인이 일치하지 않습니다.")
+            } else if (!is_nickname(nickname)){
+              alert("아이디 형식을 확인해 주세요!")
+            } else if (password.match(nickname) == nickname){
+            alert("아이디가 비밀번호에 들어갈 수 없습니다.")
+          } else {
               const target = document.getElementById('login-id-submit');
               target.disabled = false;
-              alert("사용할수 있는 아이디 입니다.")
+              alert("회원가입 버튼을 눌러주세요!")
             }
         }
       });
@@ -107,12 +106,11 @@
     <input class="input b" type="password" name="password" id="password" placeholder="비밀번호">
     <p  class="help-btn">비밀번호는 4자 이상 입력해주세요</p>
     <input class="input c" id="checkpass" type="password" placeholder="비밀번호 확인">
-
     <button id="login-id-submit" disabled='disabled' class="button is-primary is-light d" onclick="sign_up()" >회원가입</button>
     <P class="help-btn">아이디 중복확인, 비밀번호 확인을 하시면 활성화 됩니다!</P>
   </form>
-
+  <button class="button dup is-primary" onclick="checkdup()">아이디 중복 확인 및 비밀번호 확인</button>
 </div>
-<button class="button dup is-primary" onclick="checkdup()">아이디 중복 확인 및 비밀번호 확인</button>
+
 </body>
 </html>

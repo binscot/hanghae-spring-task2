@@ -49,9 +49,9 @@ public class UserController {
         int result = userService.isDuplicateName(nickname);
         System.out.println(result);
         if (result==1){
-            return "y";
+            return "중복";
         } else {
-            return "n";
+            return "중복아님";
         }
     }
 
