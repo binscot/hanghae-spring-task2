@@ -29,7 +29,6 @@ public class KakaoUserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-
     @Autowired
     public KakaoUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -48,10 +47,6 @@ public class KakaoUserService {
         forceLogin(kakaoUser);
 
     }
-
-
-
-
 
     private String getAccessToken(String code) throws JsonProcessingException {
 
@@ -125,10 +120,6 @@ public class KakaoUserService {
             String password = UUID.randomUUID().toString();
             String encodedPassword = passwordEncoder.encode(password);
 
-            // email: kakao email
-//            String email = kakaoUserInfo.getEmail();
-
-
             kakaoUser = new User(nickname, encodedPassword,  kakaoId);
             userRepository.save(kakaoUser);
         }
@@ -140,6 +131,5 @@ public class KakaoUserService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
-
 
 }

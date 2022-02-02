@@ -2,7 +2,6 @@ package com.sparta.task02.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -33,30 +32,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/api/articles").permitAll()
-                .antMatchers("/api/articles/**").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/api/check").permitAll()
-                .antMatchers("/api/articles/**/comments/**").permitAll()
-                .antMatchers("/articles/**/comments").permitAll()
-                .antMatchers("/api/articles/**/comments").permitAll()
-                .antMatchers("/detail/**").permitAll()
-                .antMatchers("/write").authenticated()
-                .antMatchers("/user/signup").anonymous()
-                .mvcMatchers(HttpMethod.GET, "/detail", "/detail/**").permitAll()
-                // image 폴더를 login 없이 허용
-                .antMatchers("/images/**").permitAll()
-                // css 폴더를 login 없이 허용
-                .antMatchers("/static/css/**").permitAll()
-                // 회원 관리 처리 API 전부를 login 없이 허용
-                .antMatchers("/user/login").permitAll()
-
+                //api설계와 페이지구성을 제대로 하지않고 막해서 이렇게 많아짐,,,
+                .antMatchers("/","/api/search","/user/login","/detail/**","/user/signup","/api/articles",
+                        "/api/articles/**","/user/**","/write","/api/check","/api/articles/**/comments/**","/articles/**/comments",
+                        "/api/articles/**/comments").permitAll()
                 // 그 외 어떤 요청이든 '인증'
                 .anyRequest().authenticated()
+
                 .and()
                 // [로그인 기능]
                 .formLogin()
-                // 로그인 View 제공 (GET /user/login)드
+                // 로그인 View 제공 (GET /user/login)
                 .loginPage("/user/login")
                 // 로그인 처리 (POST /user/login)
                 .loginProcessingUrl("/user/login")
@@ -65,15 +51,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그인 처리 후 실패 시 URL
                 .failureUrl("/user/login?error")
                 .permitAll()
+
                 .and()
                 // [로그아웃 기능]
                 .logout()
                 // 로그아웃 요청 처리 URL
                 .logoutUrl("/user/logout")
                 .permitAll()
+
                 .and()
                 .exceptionHandling()
                 // "접근 불가" 페이지 URL 설정
-                .accessDeniedPage("/forbidden.html");
+                .accessDeniedPage("/error.html");
     }
 }

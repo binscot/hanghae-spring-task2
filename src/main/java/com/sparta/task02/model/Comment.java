@@ -1,10 +1,10 @@
 package com.sparta.task02.model;
 
+
 import com.sparta.task02.dto.CommentRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 
 @NoArgsConstructor
@@ -19,7 +19,6 @@ public class Comment extends Timestamped {
 
     @Column(nullable = false)
     private String username;
-
 
     @Column(nullable = false)
     private String comment;
@@ -40,11 +39,6 @@ public class Comment extends Timestamped {
     public void updateComment(CommentRequestDto requestDto) {
         this.comment = requestDto.getComment();
     }
-
-
-//    public void update(CommentRequestDto requestDto){
-//        this.comment = requestDto.getContents();
-//    }
 
 }
 

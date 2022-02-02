@@ -47,7 +47,15 @@
       color: #8e8383;
     }
   </style>
-  <script>
+  <script th:inline="javascript">
+    var usernames = /*[[${#authentication.name}]]*/ 'null'
+    console.log(usernames)
+    $(function(){
+      if (usernames != 'anonymousUser'){
+        alert("이미 로그인 한 사용자 입니다.")
+        window.location.assign('/')
+      }
+    });
 
     function is_nickname(asValue) {
       var regExp = /^[a-zA-Z0-9]{3,20}$/;
@@ -68,13 +76,12 @@
             alert("중복된 아이디 입니다.")
             }else if (nickname=='') {
             alert("아이디를 입력해주세요!")
-          }
-            // } else if (password != passwordCheck){
-            //   alert("비밀번호와 비밀번호확인이 일치하지 않습니다.")
-            // }
-          else if (!is_nickname(nickname)){
+            } else if (password != passwordCheck){
+              alert("비밀번호와 비밀번호확인이 일치하지 않습니다.")
+            } else if (!is_nickname(nickname)){
               alert("아이디 형식을 확인해 주세요!")
-            } else if (password.match(nickname) == nickname){
+            }
+          else if (password.match(nickname) == nickname){
             alert("아이디가 비밀번호에 들어갈 수 없습니다.")
           } else {
               const target = document.getElementById('login-id-submit');

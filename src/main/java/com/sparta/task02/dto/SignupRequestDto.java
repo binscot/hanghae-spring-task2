@@ -1,14 +1,15 @@
 package com.sparta.task02.dto;
 
+
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Setter
 @Getter
+//회원가입시도시 필요 조건들 validation
 public class SignupRequestDto {
     @NotBlank(message = "아이디를 입력해 주세요!")
     @Size(min = 3,max = 10, message = "아이디는 3자 이상 10자 이하로 입력해 주세요!")
@@ -18,7 +19,6 @@ public class SignupRequestDto {
     @NotBlank(message = "비밀번호를 입력해 주세요!")
     @Size(min = 4, max = 10, message = "비밀번호는 4자 이상 입력해주세요!")
     private String password;
-//    private String email;
 
     @NotBlank(message = "비밀번호 확인을 입력해 주세요")
     @Size(min = 4, max = 10, message = "비밀번호 확인은 4자 이상 입력해주세요!")

@@ -3,11 +3,7 @@ package com.sparta.task02.controller;
 
 import com.sparta.task02.dto.ArticleRequestDto;
 import com.sparta.task02.model.Article;
-import com.sparta.task02.model.Comment;
-import com.sparta.task02.model.User;
 import com.sparta.task02.repository.ArticleRepository;
-import com.sparta.task02.repository.CommentRepository;
-import com.sparta.task02.repository.UserRepository;
 import com.sparta.task02.security.UserDetailsImpl;
 import com.sparta.task02.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +21,6 @@ public class ArticleController {
 
     private final ArticleRepository articleRepository;
     private final ArticleService articleService;
-    private final CommentRepository commentRepository;
-
 
     //게시글 생성
     @PostMapping("/api/articles")
@@ -36,8 +30,6 @@ public class ArticleController {
         return articleRepository.save(article);
     }
 
-
-
     //게시글 생성 페이지 이동
     @RequestMapping("/write")
     public ModelAndView write() {
@@ -45,16 +37,6 @@ public class ArticleController {
         modelAndView.setViewName("write.html");
         return modelAndView;
     }
-
-
-    @RequestMapping("/user/login")
-    public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login.html");
-        return modelAndView;
-    }
-
-
 
     //게시글 전체 조회
     @GetMapping("/api/articles")
@@ -74,16 +56,18 @@ public class ArticleController {
         return modelAndView;
     }
 
-
+    //게시글 수정
+    @PutMapping("/api/articles/{id}")
+    public Long updateArticles(@PathVariable Long id, @RequestBody ArticleRequestDto requestDto){
+        articleService.update(id, requestDto);
+        return id;
+    }
 
     //게시글 검색
-//    @GetMapping("/api/search")
-//    public List<Article> search(String keyword){
-//        List<Article> searchList = articleService.search(keyword);
-//        return searchList;
-//    }
-
-
+    @GetMapping("/api/search")
+    public List<Article> search(String keyword){
+        return articleService.search(keyword);
+    }
 
     //게시글 삭제
     @DeleteMapping("/api/articles/{id}")

@@ -1,5 +1,6 @@
 package com.sparta.task02.dto;
 
+
 import lombok.Getter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

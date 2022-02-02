@@ -97,53 +97,52 @@
       showProduct();
     })
     /////////게시글 검색하기//////////////
-    // function execSearch() {
-    //   //검색창의 입력값을 가져온다.
-    //   let keyword = $('#keyword').val();
-    //   //검색창 입력값을 검사하고, 입력하지 않았을 경우 focus.
-    //   if (keyword == '') {
-    //     alert('검색어를 입력해주세요');
-    //     $('#keyword').focus();
-    //     return;
-    //   }
-    //   //GET /api/search?keyword=${keyword} 요청
-    //   $.ajax({
-    //     type: 'GET',
-    //     url: `/api/search?keyword=${keyword}`,
-    //     success: function (response) {
-    //       $('#search-result-box').empty();
-    //       // 검색해서 가져온 리스트 for문 돌려 하나씩 꺼내기
-    //       for (let i = 0; i < response.length; i++) {
-    //         let article = response[i];
-    //         let id = article.id;
-    //         let username = article.username;
-    //         let title = article.title;
-    //         let contens = article.contens;
-    //         let modifiedAt = article.modifiedAt;
-    //         //꺼내온 값 search-result-box에 붙혀넣기
-    //         addHTML2(id, username, title, modifiedAt);
-    //       }
-    //     }
-    //   })
-    //
-    // }
-    // //search-result-box만들기
-    // function addHTML2(id, username, title, modifiedAt) {
-    //   let tempHtml = `<div class="box">
-    //                             <article>
-    //                                 <a href="/detail/${id}" class="boxTitle" id="${id}-title">${title}</a>
-    //                                 <div class="metadata">
-    //                                             <div id="${id}-username" class="username">
-    //                                                 @${username}&nbsp;
-    //                                             </div>
-    //                                             <div class="date">
-    //                                                &nbsp; ${modifiedAt}
-    //                                             </div>
-    //                                         </div>
-    //                             </article>
-    //                             </div>`;
-    //   $('#search-result-box').append(tempHtml);
-    // }
+    function execSearch() {
+      //검색창의 입력값을 가져온다.
+      let keyword = $('#keyword').val();
+      //검색창 입력값을 검사하고, 입력하지 않았을 경우 focus.
+      if (keyword == '') {
+        alert('검색어를 입력해주세요');
+        $('#keyword').focus();
+        return;
+      }
+      //GET /api/search?keyword=${keyword} 요청
+      $.ajax({
+        type: 'GET',
+        url: `/api/search?keyword=${keyword}`,
+        success: function (response) {
+          $('#search-result-box').empty();
+          // 검색해서 가져온 리스트 for문 돌려 하나씩 꺼내기
+          for (let i = 0; i < response.length; i++) {
+            let article = response[i];
+            let id = article.id;
+            let username = article.username;
+            let title = article.title;
+            let modifiedAt = article.modifiedAt;
+            //꺼내온 값 search-result-box에 붙혀넣기
+            addHTML2(id, username, title, modifiedAt);
+          }
+        }
+      })
+
+    }
+    //search-result-box만들기
+    function addHTML2(id, username, title, modifiedAt) {
+      let tempHtml = `<div class="box">
+                                <article>
+                                    <a href="/detail/${id}" class="boxTitle" id="${id}-title">${title}</a>
+                                    <div class="metadata">
+                                                <div id="${id}-username" class="username">
+                                                    @${username}&nbsp;
+                                                </div>
+                                                <div class="date">
+                                                   &nbsp; ${modifiedAt}
+                                                </div>
+                                            </div>
+                                </article>
+                                </div>`;
+      $('#search-result-box').append(tempHtml);
+    }
     //전체목록으로 갔을때 새로고침
     function removeSearch(){
       window.location.reload()

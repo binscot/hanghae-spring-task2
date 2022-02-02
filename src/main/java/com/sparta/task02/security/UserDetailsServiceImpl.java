@@ -1,7 +1,6 @@
 package com.sparta.task02.security;
 
 
-
 import com.sparta.task02.model.User;
 import com.sparta.task02.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

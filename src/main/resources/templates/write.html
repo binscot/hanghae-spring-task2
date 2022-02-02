@@ -18,7 +18,16 @@
   <!-- JS -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-  <script>
+  <script th:inline="javascript">
+    var usernames = /*[[${#authentication.name}]]*/ 'null'
+    console.log(usernames)
+    $(function(){
+      if (usernames == 'anonymousUser'){
+        alert("로그인이 필요합니다!")
+        window.location.assign('/user/login')
+      }
+    });
+
     //생성한 게시글을 확인
     function isValidContents(contents, title) {
 
@@ -102,8 +111,7 @@
     <p class="title">
       The bulletin board.
     </p>
-    <p class="subtitle">
-      It's just a bulletin board.
+    <p th:text="${#authentication.name} +'님 반갑습니다'" class="subtitle">
     </p>
   </div>
 </section>
