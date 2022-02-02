@@ -18,7 +18,6 @@ public class UserController {
     private final UserService userService;
     private final KakaoUserService kakaoUserService;
 
-
     @Autowired
     public UserController(UserService userService, KakaoUserService kakaoUserService) {
         this.userService = userService;
@@ -37,24 +36,6 @@ public class UserController {
         return "signup";
     }
 
-    //아이디 중복 체크
-    @PostMapping("/api/check")
-    public @ResponseBody String checkNick(@RequestBody String nickname){
-        //작성된 아이디를 서비스로 보내 같은아이디가 있는지 확인 후 1,0 을 반환
-        int result = userService.isDuplicateName(nickname);
-        if (result==1){
-            return "중복";
-        } else {
-            return "중복아님";
-        }
-    }
-
-    @PostMapping("/aaa")
-    public void a(@RequestBody SignupRequestDto requestDto){
-        System.out.println(requestDto);
-    }
-
-
     // 회원 가입 요청 처리
     @PostMapping("/api/signup")
     public @ResponseBody
@@ -67,7 +48,6 @@ public class UserController {
         int checkNamePassword = userService.namePsswordCheck(requestDto);
         //아래 과정을 모두 통과하면 회원가입 성공!
         if (bindingResult.hasErrors()) {
-            System.out.println(bindingResult.getFieldError().getDefaultMessage());
             return bindingResult.getFieldError().getDefaultMessage();
         } else if (checkNamePassword == 0) {
             System.out.println("비밀번호에 아이디를 포함할 수 없습니다.");

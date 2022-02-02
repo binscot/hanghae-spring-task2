@@ -23,15 +23,6 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //중복체크 버튼용
-    public int isDuplicateName(String nickname){
-        Optional<User> found = userRepository.findByUsername(nickname);
-        if (found.isPresent()){
-            return 1;
-        } else {
-            return 0;
-        }
-    }
     //회원가입용 중복체크
     public int nameCheck(SignupRequestDto requestDto){
         Optional<User> found = userRepository.findByUsername(requestDto.getUsername());
@@ -63,7 +54,6 @@ public class UserService {
             return 3;
         }
     }
-
 
     public void registerUser(SignupRequestDto requestDto) {
         // 회원 ID 중복 확인
