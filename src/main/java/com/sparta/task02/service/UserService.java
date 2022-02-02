@@ -7,6 +7,8 @@ import com.sparta.task02.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -28,6 +30,16 @@ public class UserService {
             return 1;
         } else {
             return 0;
+        }
+    }
+
+    public int checkPassword(SignupRequestDto requestDto){
+        String p = requestDto.getPassword();
+        String c = requestDto.getPasswordCheck();
+        if (Objects.equals(c, p)){
+            return 2;
+        }else {
+            return 3;
         }
     }
 

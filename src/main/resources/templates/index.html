@@ -253,8 +253,7 @@
     <form id="my_form" method="post" action="/user/logout">
       <a sec:authorize="isAuthenticated()" class="login-btn" id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
     </form>
-    <p class="subtitle">
-      It's just a bulletin board.
+    <p th:text="${#authentication.name} +'님 반갑습니다'" class="subtitle">
     </p>
 
   </div>

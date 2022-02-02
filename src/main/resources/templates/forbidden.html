@@ -48,6 +48,22 @@
     }
   </style>
   <script>
+    // window.onload=function(){
+    //
+    //   alert("이미 로그인된 유저 입니다.")
+    // }
+
+    $(document).ready(function () {
+      listing();
+    });
+
+    function listing() {
+      console.log('화면 로딩 후 잘 실행되었습니다');
+      alert("aaaa")
+    }
+
+
+
     var lock = document.querySelector('#lock');
     var key = document.querySelector('#key');
 
@@ -76,6 +92,8 @@
 
 
     setInterval(keyAnimate, 3000);
+
+
   </script>
 </head>
 <body>

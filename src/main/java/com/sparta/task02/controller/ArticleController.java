@@ -71,15 +71,6 @@ public class ArticleController {
         modelAndView.addObject("contents", article.get().getContents());
         modelAndView.addObject("createdAt", article.get().getCreatedAt());
         modelAndView.addObject("modifiedAt", article.get().getModifiedAt());
-//        if (userDetails.getUser().getUsername() != null){
-//            modelAndView.addObject("name",userDetails.getUser().getUsername());
-//        }
-//        modelAndView.addObject("[[${name}]]",userDetails.getUser().getUsername());
-//        modelAndView.addObject("commentName",comment.get().getUsername());
-//        String commentname = comment.get().getUsername();
-//        System.out.println(commentname);
-
-
         return modelAndView;
     }
 
@@ -93,31 +84,6 @@ public class ArticleController {
 //    }
 
 
-
-    //게시글 수정
-    @PutMapping("/api/articles/{id}")
-    public Long updateArticles(@PathVariable Long id, @RequestBody ArticleRequestDto requestDto){
-
-        articleService.update(id, requestDto);
-        return id;
-    }
-
-
-    //게시글 수정페이지로 원 게시글 정보 가져가기
-//    @GetMapping("/edit/{id}")
-//    public ModelAndView editPage(@PathVariable("id") Long Id){
-//        Optional<Article> article = articleRepository.findById(Id);
-//        ModelAndView modelAndViewa = new ModelAndView("edit.html");
-//        modelAndViewa.addObject("id", article.get().getId());
-//        modelAndViewa.addObject("title", article.get().getTitle());
-//        modelAndViewa.addObject("username", article.get().getUsername());
-//        modelAndViewa.addObject("contents", article.get().getContents());
-//        modelAndViewa.addObject("createdAt", article.get().getCreatedAt());
-//        modelAndViewa.addObject("modifiedAt", article.get().getModifiedAt());
-//
-//        return modelAndViewa;
-//
-//    }
 
     //게시글 삭제
     @DeleteMapping("/api/articles/{id}")

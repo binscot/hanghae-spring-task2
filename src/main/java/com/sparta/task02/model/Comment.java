@@ -24,12 +24,6 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     private String comment;
 
-//    @ManyToOne
-//    private Article article;
-//
-//    @ManyToOne
-//    private User user;
-
     @Column(nullable = false)
     private long aticleId;
 

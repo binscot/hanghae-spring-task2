@@ -47,7 +47,6 @@ public class UserController {
     public @ResponseBody String checkNick(@RequestBody String nickname){
         System.out.println(nickname);
         int result = userService.isDuplicateName(nickname);
-        System.out.println(result);
         if (result==1){
             return "중복";
         } else {
@@ -61,15 +60,26 @@ public class UserController {
     @PostMapping("/user/signup")
     public String registerUser(@Validated SignupRequestDto requestDto, BindingResult bindingResult) {
         //리스폰스dto로 넘겨서 ajax로 뿌리기
-
         String e = String.valueOf(bindingResult.getAllErrors());
-        if (!bindingResult.hasErrors()){
-            userService.registerUser(requestDto);
-            return "redirect:/user/login";
-        } else {
+        int checkPassword = userService.checkPassword(requestDto);
+        System.out.println(checkPassword);
+        if (bindingResult.hasErrors()){
             System.out.println(e);
             return "redirect:/user/signup";
+        } else if (checkPassword==3){
+            System.out.println("비밀번호가 일치하지 않습니다.");
+            return "redirect:/user/signup";
+        } else {
+            userService.registerUser(requestDto);
+            return "redirect:/user/login";
         }
+//        if (!bindingResult.hasErrors() && checkPassword==2){
+//            userService.registerUser(requestDto);
+//            return "redirect:/user/login";
+//        } else {
+//            System.out.println(e);
+//            return "redirect:/user/signup";
+//        }
     }
 
     //카카오톡 로그인 인가코드받으면 홈으로!
