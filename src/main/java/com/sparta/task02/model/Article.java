@@ -30,7 +30,6 @@ public class Article extends Timestamped {
     private Long userId;
 
 
-
     public Article(ArticleRequestDto requestDto, Long userId, String username) {
         this.userId = userId;
         this.title = requestDto.getTitle();

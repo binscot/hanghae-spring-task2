@@ -49,13 +49,16 @@ public class UserController {
         }
     }
 
+    @PostMapping("/aaa")
+    public void a(@RequestBody SignupRequestDto requestDto){
+        System.out.println(requestDto);
+    }
 
 
     // 회원 가입 요청 처리
-    @PostMapping("/user/signup")
-    public String registerUser(@Validated SignupRequestDto requestDto, BindingResult bindingResult) {
-        //Validated에러를 e값에 넣음
-        String e = String.valueOf(bindingResult.getAllErrors());
+    @PostMapping("/api/signup")
+    public @ResponseBody
+    String registerUser(@Validated @RequestBody SignupRequestDto requestDto, BindingResult bindingResult) {
         //비밀번호 확인
         int checkPassword = userService.checkPassword(requestDto);
         //아이디 중복체크  위에 만들어서 필요없지만 테스트할때 쓰려고 가입단에서 다시한번 체크
@@ -63,21 +66,19 @@ public class UserController {
         //비밀번호안에 아이디가 있는지 확인
         int checkNamePassword = userService.namePsswordCheck(requestDto);
         //아래 과정을 모두 통과하면 회원가입 성공!
-        if (bindingResult.hasErrors()){
-            System.out.println(e);
-            return "redirect:/user/signup";
-        } else if(checkNamePassword==0){
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+            return bindingResult.getFieldError().getDefaultMessage();
+        } else if (checkNamePassword == 0) {
             System.out.println("비밀번호에 아이디를 포함할 수 없습니다.");
-            return "redirect:/user/signup";
-        } else if (checkPassword==3){
-            System.out.println("비밀번호가 일치하지 않습니다.");
-            return "redirect:/user/signup";
-        } else if (checkName==1){
-            System.out.println("중복된 아이디 입니다.");
-            return "redirect:/user/signup";
+            return "비밀번호에 아이디를 포함할 수 없습니다.";
+        } else if (checkPassword == 3) {
+            return "비밀번호가 일치하지 않습니다.";
+        } else if (checkName == 1) {
+            return "중복된 아이디 입니다.";
         } else {
             userService.registerUser(requestDto);
-            return "redirect:/user/login";
+            return "회원가입을 축하합니다!";
         }
     }
 
@@ -86,7 +87,7 @@ public class UserController {
     public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
         // authorizedCode: 카카오 서버로부터 받은 인가 코드
         kakaoUserService.kakaoLogin(code);
-
         return "redirect:/";
     }
+
 }

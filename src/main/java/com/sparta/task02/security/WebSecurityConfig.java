@@ -34,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 //api설계와 페이지구성을 제대로 하지않고 막해서 이렇게 많아짐,,,
                 .antMatchers("/","/api/search","/user/login","/detail/**","/user/signup","/api/articles",
-                        "/api/articles/**","/user/**","/write","/api/check","/api/articles/**/comments/**","/articles/**/comments",
+                        "/api/articles/**","/user/**","/api/signup","/write","/api/check","/api/articles/**/comments/**","/articles/**/comments",
                         "/api/articles/**/comments").permitAll()
                 // 그 외 어떤 요청이든 '인증'
                 .anyRequest().authenticated()
@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/user/login")
                 // 로그인 처리 후 성공 시 URL
                 .defaultSuccessUrl("/")
-                // 로그인 처리 후 실패 시 URL
+                 //로그인 처리 후 실패 시 URL
                 .failureUrl("/user/login?error")
                 .permitAll()
 
