@@ -5,9 +5,10 @@
 <head>
   <meta charset="UTF-8">
   <!-- Webpage Title -->
-  <title>주특기 1주차 개인과제</title>
-
-
+  <title>just a bulletin board</title>
+  <!--  og-->
+  <meta property="og:title" content="just a bulletin board">
+  <meta property="og:description" content="그냥 게시판 입니다!!">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -163,32 +164,8 @@
         alert("잘생각하셨습니다!")
         window.location.reload();
       }
-      // $.ajax({
-      //   type: "DELETE",
-      //   url: `/api/articles/{articleId}/comments/${commentId}`,
-      //   success: function (response) {
-      //     console.log(response)
-      //     if (response==="삭제성공"){
-      //       alert('메시지 삭제에 성공하였습니다.');
-      //       window.location.reload();
-      //     } else {
-      //       alert('작성자만 삭제할수 있습니다.')
-      //     }
-      //
-      //   }
-      // })
     }
 
-    //메모 수정 수정페이지로 아이디값을 가지고 이동
-    // function edit(){
-    //   let a = [[${id}]];
-    //   if ("[[${username}]]"=="[[${name}]]"){
-    //     window.location.assign("/edit/"+a);
-    //   } else {
-    //     alert("작성자만 수정 가능합니다.")
-    //   }
-    //
-    // }
 
     function editArticle(){
 
